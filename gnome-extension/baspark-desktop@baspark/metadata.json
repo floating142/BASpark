@@ -1,0 +1,9 @@
+{
+  "uuid": "baspark-desktop@baspark",
+  "name": "BASpark Desktop",
+  "description": "BASpark click spark effect for GNOME Shell (Wayland/X11).",
+  "version": 1,
+  "settings-schema": "org.gnome.shell.extensions.baspark-desktop",
+  "shell-version": ["45", "46", "47", "48"],
+  "url": "https://github.com/floating142/BASpark"
+}

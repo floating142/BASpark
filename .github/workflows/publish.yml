@@ -1,4 +1,4 @@
-name: Build and Release Installer
+name: GNOME Extension Release
 
 on:
   push:
@@ -9,55 +9,24 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    runs-on: windows-latest
-
+  release:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Build Single EXE
-        shell: pwsh
+      - name: Archive extension
         run: |
-          $RAW_VER = "${{ github.ref_name }}".TrimStart("v")
-          
-          dotnet publish src/BASpark.csproj `
-            -c Release `
-            -r win-x64 `
-            --self-contained true `
-            -p:PublishSingleFile=true `
-            -p:IncludeNativeLibrariesForSelfExtract=true `
-            -p:Version=$RAW_VER `
-            -o src/publish_full
-
-      - name: Compile Inno Setup
-        shell: pwsh
-        run: |
-          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DAppVersion=${{ github.ref_name }} setup.iss
+          cd gnome-extension
+          zip -r ../baspark-gnome-extension.zip .
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/BASpark_Installer_*.exe
-          name: "BASpark Release ${{ github.ref_name }}"
-          generate_release_notes: true
-          body: |
-            ## 💫 BASpark 正式版 ${{ github.ref_name }}
-            
-            ---
-            
-            - **运行环境**：Windows 10/11 (x64) | .NET 8.0 Runtime
-            - **开源协议**：MIT License (完全免费，禁止商用)
-            - **问题反馈**：请提交 [Issues] 或联系作者。
-
-            本次更新包含以下改动：
+          files: baspark-gnome-extension.zip
+          name: "BASpark GNOME Release ${{ github.ref_name }}"
           draft: false
           prerelease: false
         env:

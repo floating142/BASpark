@@ -1,4 +1,4 @@
-name: PR Build Check
+name: GNOME Extension PR Check
 
 on:
   pull_request:
@@ -6,49 +6,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: windows-latest
-
+  check:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Build Single EXE
-        shell: pwsh
+      - name: Check JS/JSON syntax
         run: |
-          $RAW_VER = "${{ github.ref_name }}".TrimStart("v")
-          
-          if ("${{ github.event_name }}" -eq 'pull_request') { 
-              $PR_NUM = "${{ github.event.pull_request.number }}"
-              $RAW_VER = "0.0.0-pr.$PR_NUM" 
-          }
-          elseif ($RAW_VER -eq "main" -or [string]::IsNullOrWhiteSpace($RAW_VER)) { 
-              $RAW_VER = "0.0.0-preview" 
-          }
-          
-          Write-Host "----------------------------------------------"
-          Write-Host "Targeting Version: $RAW_VER"
-          Write-Host "----------------------------------------------"
+          find gnome-extension/ -type f \( -name '*.js' -o -name '*.json' \) -exec node -c {} +
 
-          dotnet publish src/BASpark.csproj `
-            -c Release `
-            -r win-x64 `
-            --self-contained true `
-            -p:PublishSingleFile=true `
-            -p:IncludeNativeLibrariesForSelfExtract=true `
-            -p:Version=$RAW_VER `
-            -o src/publish_single
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: BASpark-Executable-Preview
-          path: src/publish_single/
-          retention-days: 7
+      - name: Validate metadata.json
+        run: |
+          test -f gnome-extension/baspark-desktop@baspark/metadata.json && jq . gnome-extension/baspark-desktop@baspark/metadata.json

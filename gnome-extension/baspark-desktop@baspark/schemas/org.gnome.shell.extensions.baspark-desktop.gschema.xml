@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.baspark-desktop" path="/org/gnome/shell/extensions/baspark-desktop/">
+    <key name="debug-log" type="b"><default>true</default></key>
+    <key name="poll-interval-ms" type="i"><default>16</default></key>
+    <key name="time-scale" type="d"><default>1.0</default></key>
+    <key name="global-scale" type="d"><default>1.0</default></key>
+
+    <key name="dedupe-distance-px" type="i"><default>6</default></key>
+    <key name="dedupe-time-ms" type="i"><default>120</default></key>
+    <key name="captured-priority-window-ms" type="i"><default>120</default></key>
+
+    <key name="enable-trail" type="b"><default>true</default></key>
+
+    <key name="enable-distance-emitter" type="b"><default>true</default></key>
+    <key name="distance-emit-step-px" type="i"><default>100</default></key>
+
+    <key name="color-base-rgb" type="s"><default>'85,189,255'</default></key>
+    <key name="color-deep-rgb" type="s"><default>'23,110,220'</default></key>
+    <key name="color-white-rgb" type="s"><default>'255,255,255'</default></key>
+  </schema>
+</schemalist>
