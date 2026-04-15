@@ -4,7 +4,7 @@ BASpark GNOME 扩展是 Blue Archive 风格点击与拖尾特效的 GNOME Shell 
 
 本项目为 [BASpark](https://github.com/DoomVoss/BASpark) 项目的分支，但由于原实现效果不理想，已进行彻底重构，专注于 GNOME Shell 平台的高还原度视觉体验。
 
-# 项目说明
+## 项目说明
 
 本项目基于 Unity 原始序列化数据（JSON）进行参数映射，而非直接模拟。
 
